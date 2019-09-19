@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.PassageMapper">
+    <resultMap id="Passage" type="com.icode.gmsystem.model.Passage">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="columnId" column="column_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isTop" column="is_top"/>
+        <result property="content" column="content"/>
+        <result property="isChecked" column="is_checked"/>
+
+        <association property="id" javaType="com.icode.gmsystem.model.Column" column="id" >
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+        </association>
+    </resultMap>
+
+    <!--增加一篇文章-->
+    <insert id="insertPassage">
+        insert into passage (title,author,column_id,create_time,is_top,content,is_checked)
+        values (#{passage.title},#{passage.author},#{passage.columnId},#{passage.createTime},#{passage.isTop},#{passage.content},#{passage.isChecked})
+    </insert>
+
+
+    <!--修改一篇文章-->
+    <update id="updatePassage">
+        update passage
+        set id =#{passage.id},title =#{passage.title},author =#{passage.author},
+        column_id =#{passage.columnId},create_time =#{passage.createTime},is_top =#{passage.isTop},
+        content =#{passage.content},is_checked=#{passage.isChecked}
+        where id =#{passage.id};
+    </update>
+
+
+
+    <!--删除一篇文章-->
+    <delete id="deletePassage">
+        delete from passage where id=#{id}
+    </delete>
+
+    <!--查询所有文章-->
+    <select id="selectPassage" resultType="java.util.Map" >
+        select  p.id,p.title,user.name as author,c.name,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c, user
+        WHERE p.column_id = c.id
+        and user.id = p.author
+    </select>
+
+    <!--模糊查询-->
+    <select id="selectPassageByUnclear" resultType="java.util.Map">
+        select  p.id,p.title,p.author,c.name,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c
+        WHERE p.column_id = c.id
+        <if test="title.length != 0">
+            and p.title like concat('%',#{title},'%')
+        </if>
+        <if test="startingTime.length !=0">
+            and p.create_time BETWEEN #{startingTime} AND #{endingTime}
+        </if>
+    </select>
+
+
+    <!--根据栏目查询文章-->
+    <select id="selectPassageByColumn" resultType="java.util.Map">
+        select  p.id,p.title,p.author,c.name,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c
+        WHERE p.column_id = c.id and p.column_id in (#{columnId})
+    </select>
+
+    <!--根据id查询文章-->
+    <select id="selectPassageById" resultType="com.icode.gmsystem.model.Passage">
+        select  p.id,p.title,p.author,c.name,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c
+        WHERE p.column_id = c.id and p.id =#{id}
+    </select>
+
+    <!--更新状态-->
+    <update id="updateIsChecked">
+        update passage
+        set is_checked=#{passage.isChecked}
+        where id=#{passage.id}
+    </update>
+
+    <!--获取所有文章（other）-->
+    <select id="listPassage" resultType="java.util.Map">
+        select  p.id,p.title,user.name as author,c.name,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c, user
+        WHERE p.column_id = c.id
+        and user.id = p.author
+        <if test="author.length != 0">
+            and p.author = #{author}
+        </if>
+        <if test="columnName.length != 0">
+            and c.name = #{columnName}
+        </if>
+        <if test="startTime.length != 0">
+            and p.create_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="isChecked != -1">
+            and p.is_checked = #{isChecked}
+        </if>
+    </select>
+
+    <!--查询已经审核的文章-->
+    <select id="selectPassageByAprove" resultType="java.util.Map">
+         select  p.id,p.title,user.name as author,c.name, p.column_id,p.create_time,p.is_top,p.content,p.is_checked
+        from passage p,`column` c, user
+        WHERE p.column_id = c.id
+        and user.id = p.author and is_checked = 1
+    </select>
+</mapper>

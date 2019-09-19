@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.OperatorMapper">
+    <!--查询角色-->
+    <select id="listOperator" resultType="com.icode.gmsystem.model.OperatorType">
+        select operator_type as operatorId, name
+        from operatortype
+        <where>
+            <if test="operatorId != null">
+                and operator_type = #{operatorId}
+            </if>
+        </where>
+    </select>
+    <!--新增角色-->
+    <insert id="insertOperator">
+        insert into operatortype(name)
+        values (#{operator.name})
+    </insert>
+    <!--删除角色-->
+    <delete id="deleteOperator">
+        delete from operatortype
+        where operator_type = (#{operatorId})
+    </delete>
+</mapper>

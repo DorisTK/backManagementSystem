@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.ModuleMapper">
+    <select id="listModule" resultType="com.icode.gmsystem.model.Module">
+         select id, name, level, belong
+         from module
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name.length!=0">
+                and name = #{name}
+            </if>
+            <if test="level != null">
+                and level = #{level}
+            </if>
+            <if test="belong != null">
+                and belong = #{belong}
+            </if>
+        </where>
+    </select>
+</mapper>

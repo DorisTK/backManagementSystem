@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.ColumnMapper">
+    <resultMap id="Passage" type="com.icode.gmsystem.model.Column">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="total" column="total"/>
+
+        <association property="id" javaType="com.icode.gmsystem.model.TotalColumn" column="id" >
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+        </association>
+
+    </resultMap>
+
+    <!--查询栏目-->
+    <select id="selectColumn" resultType="com.icode.gmsystem.model.Column">
+        select `column`.id,`column`.`name`,`column`.total from `column`
+    </select>
+
+    <!--新增栏目-->
+    <insert id="insertColumn">
+        insert into `column` (`name`,total)
+        values (#{column.name},#{column.total})
+    </insert>
+
+    <!--修改栏目-->
+    <update id="updateColumn">
+        update `column`
+        set `name`=#{column.name}
+        where id=#{column.id}
+    </update>
+
+    <!--删除栏目-->
+    <delete id="deleteColumn">
+        delete from `column` where id=#{id}
+    </delete>
+</mapper>

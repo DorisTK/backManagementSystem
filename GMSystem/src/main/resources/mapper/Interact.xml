@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.InteractMapper">
+    <select id="listInteract" resultType="com.icode.gmsystem.model.Interact">
+        select interact.id, question, answer, spokesman, replyman,
+        class_id as classId, `user`.`name` as spokesmanName, class.name as className
+        from interact, `user`, class
+        where `user`.id = spokesman
+        and class.id = class_id
+        <if test="question.length != 0">
+            and question like concat('%',#{question},'%')
+        </if>
+        <if test="spokesmanName.length != 0">
+            and `user`.`name` = #{spokesmanName}
+        </if>
+        <if test="className.length != 0">
+            and class.`name` = #{className}
+        </if>
+    </select>
+    <delete id="deleteInteract">
+        delete from interact where id = #{id}
+    </delete>
+    <update id="updateInteract">
+        update interact
+        set answer = #{answer}
+        where id = #{id}
+    </update>
+    <insert id="insertInteract">
+        insert into interact(question, spokesman, spokesmanName, classId, className)
+        values (#{interact.question}, #{interact.spokesman}, #{interact.spokesmanName}, #{interact.classId}, #{interact.className})
+    </insert>
+</mapper>

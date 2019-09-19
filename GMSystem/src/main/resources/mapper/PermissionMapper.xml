@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.PermissionMapper">
+    <update id="updatePermission">
+        update permission
+        set operator_id = #{permission.operatorId}, module_id = #{permission.modules}
+        where operator_id = #{permission.operatorId}
+    </update>
+    <select id="listPermission" resultType="com.icode.gmsystem.model.Permission">
+        select id, operator_id, module_id as modules
+        from permission
+        <where>
+            <if test="operator != null">
+                and operator_id = #{operator}
+            </if>
+        </where>
+    </select>
+</mapper>

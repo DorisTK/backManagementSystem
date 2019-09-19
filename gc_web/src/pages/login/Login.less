@@ -1,0 +1,48 @@
+.login_total{
+  height: 754px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .title{
+    color: white;
+    font-weight: 200;
+    font-size: 29px;
+    margin: 20px auto;
+    width: 233px;
+  }
+  .card{
+    width: 31%;
+    height: 65%;
+    background: rgba(255,255,255,0);
+    border: 0;
+  }
+  .login_form{
+    max_width: 300px;
+  }
+  .login_button {
+    width: 200px;
+    margin-left: 30%;
+    height: 43px;
+    border-radius: 20px;
+  }
+  :global{
+    .ant-form-item-required{
+      font-weight: 400;
+      font-size: 16px;
+    }
+    .ant-input{
+      height: 50px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0);
+      margin-top: 17px;
+      font-size: 17px;
+      font-weight: 400;
+      color: white;
+    }
+    .has-error .ant-input-affix-wrapper .ant-input{
+      background-color: rgba(255,255,255,0);
+    }
+  }
+}
+

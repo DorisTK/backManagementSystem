@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.UserMapper">
+    <resultMap id="User" type="com.icode.gmsystem.model.User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="operatorType" column="operator_type"/>
+        <result property="email" column="email"/>
+        <result property="sex" column="sex"/>
+        <result property="headPhoto" column="head_photo"/>
+
+        <association property="id" javaType="com.icode.gmsystem.model.OperatorType" column="operator_type" >
+            <id property="operatorId" column="operator_type"></id>
+            <result property="name" column="name"></result>
+        </association>
+    </resultMap>
+
+    <!--创建用户-->
+    <insert id="insertUser">
+        insert into user (name,account,password,operator_type,sex)
+        values (#{user.name},#{user.account},#{user.password},#{user.operatorType},#{user.sex})
+    </insert>
+
+    <!--修改用户信息-->
+    <update id="updateUser">
+        update user
+        set `name`=#{user.name},account=#{user.account},password=#{user.password},
+        operator_type=#{user.operatorType},email=#{user.email},sex=#{user.sex},head_photo=#{user.headPhoto}
+        where id=#{user.id}
+    </update>
+
+    <!--删除用户-->
+    <delete id="deleteUser">
+        delete from user where id=#{id}
+    </delete>
+
+    <!--得到所有账号-->
+    <select id="selectAccount" resultType="java.lang.Integer">
+        select id from user
+    </select>
+
+    <!--得到所有用户-->
+    <select id="selectUser" resultType="java.util.Map">
+        select u.id,u.name,u.account,u.password,o.name as operatorName,u.head_photo,u.email,u.sex, o.operator_type
+        from user u,operatortype o
+        where u.operator_type = o.operator_type
+        <if test="id != null">
+            and u.id = #{id}
+        </if>
+    </select>
+
+
+    <select id="selectUerByUnclear" resultType="java.util.Map">
+        select u.id,u.name,u.account,u.password,o.name as operatorName,u.head_photo,u.email,u.sex, o.operator_type
+        from user u,operatortype o
+        where u.operator_type = o.operator_type
+        <if test="name.length !=0">
+            and  u.name like concat('%',#{name},'%')
+        </if>
+        <if test="operatorType.length !=0">
+            and u.operator_type = #{operatorType}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icode.gmsystem.mappers.TotalColumnMapper">
+    <select id="listFirstColumn" resultType="com.icode.gmsystem.model.TotalColumn">
+        select id, `name`
+        from total_column
+    </select>
+    <insert id="addFirstColumn">
+        insert into total_column(`name`)
+        values (#{name})
+    </insert>
+    <update id="changeFirstColumn">
+        update total_column
+        set `name`=#{name}
+        where id=#{id}
+    </update>
+    <delete id="deleteFirstColumn">
+        delete from total_column
+        where id=#{id}
+    </delete>
+</mapper>
